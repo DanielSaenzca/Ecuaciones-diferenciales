@@ -57,4 +57,4 @@ plt.plot(x_testv,a)
 plt.plot(x_testv,np.esp(-x*x))
 plt.show()
 exit()
-
+#Juan Daniel Saenz 
