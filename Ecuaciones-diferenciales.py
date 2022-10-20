@@ -1,9 +1,12 @@
+
+#Inciso 1b
 import tensorflow as tf
 from tensorflow import keras
 from keras.models import Sequential
 from keras.layers import Dense, Dropout
 from keras.optimizers import RMSprop, Adam
-
+import os
+os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE" #Estos dos renglones son para arreglar el error OMP:Error #15
 from matplotlib import pyplot as plt
 import numpy as np 
 
@@ -28,8 +31,9 @@ class ODEsolver(Sequential):
             dy = tape2.gradient(y_prend, x)
             x_o = tf.zeros((batch_size,1))
             y_o = self(x_o, training=True)
-            eq = dy + 2.*x*y_prend
-            ic = y_o - 1.
+            #Esta es la ecuación 
+            eq = 1+ 2*x + 4*x*x*x
+            ic = y_o 
             loss = keras.losses.mean_squared_error(0., eq) + keras.losses.mean_squared_error(0.,ic)
 
         #Apply grads
@@ -49,12 +53,18 @@ model.summary()
 
 model.compile(optimizer=RMSprop(), metrics=['loss'])
 
-x=tf.linspace(-2,2,100)
-history = model.fit(x,epochs=500,verbose=1)
-x_testv =tf.linspace(-2,2,100)
+x=tf.linspace(-1,1,100)
+history = model.fit(x,epochs=2000,verbose= str(1))
+x_testv =tf.linspace(-1,1,100)
 a=model.predict(x_testv)
-plt.plot(x_testv,a)
-plt.plot(x_testv,np.esp(-x*x))
+#plt.plot(x_testv,a)
+#plt.plot(x_testv,np.esp(-x*x))
+plt.figure(figsize = (10,10))
+
+plt.plot(x_testv, a)
+
+plt.plot(x_testv, 1+ 2*x + 4*x*x*x  , color = "green", linestyle='dashed')
+
 plt.show()
 exit()
-#Juan Daniel Saenz 
+#Juan Daniel Saenz Carrizoza
