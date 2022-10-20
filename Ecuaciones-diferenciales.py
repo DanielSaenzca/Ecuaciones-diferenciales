@@ -1,5 +1,5 @@
 
-#Inciso 1a
+#Inciso 1b
 import tensorflow as tf
 from tensorflow import keras
 from keras.models import Sequential
@@ -32,7 +32,7 @@ class ODEsolver(Sequential):
             x_o = tf.zeros((batch_size,1))
             y_o = self(x_o, training=True)
             #Esta es la ecuación 
-            eq = y_prend-3*tf.sin(math.pi*x) #Esta parte me marca como error en VScode pero aun asi funciona el código
+            eq = y_prend -1.-2.*x-4.*x**3 #Esta parte me marca como error en VScode pero aun asi funciona el código
             ic = y_o 
             loss = keras.losses.mean_squared_error(0., eq) + keras.losses.mean_squared_error(0.,ic)
 
@@ -63,7 +63,7 @@ plt.figure(figsize = (10,10))
 
 plt.plot(x_testv, a)
 
-plt.plot(x_testv, 3*np.sin(math.pi*x)  , color = "green", linestyle='dashed')
+plt.plot(x_testv, 1.+2.*x+4.*x**3  , color = "green", linestyle='dashed')
 
 plt.show()
 exit()
