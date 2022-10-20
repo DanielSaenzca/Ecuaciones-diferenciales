@@ -1,5 +1,5 @@
 
-#Inciso 1b
+#Inciso 2a
 import tensorflow as tf
 from tensorflow import keras
 from keras.models import Sequential
@@ -32,7 +32,7 @@ class ODEsolver(Sequential):
             x_o = tf.zeros((batch_size,1))
             y_o = self(x_o, training=True)
             #Esta es la ecuación 
-            eq = y_prend -1.-2.*x-4.*x**3 #Esta parte me marca como error en VScode pero aun asi funciona el código
+            eq = x* dy + y_prend - x*x*tf.cos(x) 
             ic = y_o 
             loss = keras.losses.mean_squared_error(0., eq) + keras.losses.mean_squared_error(0.,ic)
 
@@ -53,9 +53,9 @@ model.summary()
 
 model.compile(optimizer=RMSprop(), metrics=['loss'])
 
-x=tf.linspace(-1,1,100)
+x=tf.linspace(-5,5,100)
 history = model.fit(x,epochs=2000,verbose= str(1))
-x_testv =tf.linspace(-1,1,100)
+x_testv =tf.linspace(-5,5,100)
 a=model.predict(x_testv)
 #plt.plot(x_testv,a)
 #plt.plot(x_testv,np.esp(-x*x))
@@ -63,8 +63,7 @@ plt.figure(figsize = (10,10))
 
 plt.plot(x_testv, a)
 
-plt.plot(x_testv, 1.+2.*x+4.*x**3  , color = "green", linestyle='dashed')
-
+plt.plot(x_testv, x*np.sin(x) -2.*(-x*np.cos(x)+ np.sin(x))/x , color = "green", linestyle='dashed')
 plt.show()
 exit()
 #Juan Daniel Saenz Carrizoza
